@@ -1,6 +1,7 @@
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { PostModel } from "src/models/post.model";
 
-export const RootEntities = [];
+export const RootEntities = [PostModel];
 
 export const TypeOrmRootConfig = TypeOrmModule.forRoot({
     type: "sqlite",
