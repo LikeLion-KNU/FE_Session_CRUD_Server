@@ -18,7 +18,6 @@ export class PostsService {
 
     public async readPostById(id: number) {
         const post = await this.postRepository.findOne({ where: { id } });
-        console.log(post);
         if (!post) throw new NotFoundException();
         return post;
     }
