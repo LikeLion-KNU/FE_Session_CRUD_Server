@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { PostModel } from "src/models/post.model";
+import { PostModel } from "src/posts/entities/post.entity";
 import { Repository } from "typeorm";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { UpdatePostDto } from "./dto/update-post.dto";
@@ -17,30 +17,27 @@ export class PostsService {
     }
 
     public async readPostById(id: number) {
-        const post = this.postRepository.findOne({ where: { id } });
+        const post = await this.postRepository.findOne({ where: { id } });
+        console.log(post);
         if (!post) throw new NotFoundException();
         return post;
     }
 
     public async createPost(createPostDto: CreatePostDto) {
-        const newPost = this.postRepository.create({
+        const newPost = await this.postRepository.create({
             ...createPostDto,
             likes: 0,
         });
-        console.log(newPost);
         return this.postRepository.save(newPost);
     }
 
     public async updatePost(id: number, updatePostDto: UpdatePostDto) {
         const post = await this.postRepository.findOne({ where: { id } });
-        if (!post) {
-            console.log("notfound");
-            throw new NotFoundException();
-        }
+        if (!post) throw new NotFoundException();
 
-        if (updatePostDto.title) post.title = updatePostDto.title;
-        if (updatePostDto.author) post.author = updatePostDto.author;
-        if (updatePostDto.content) post.content = updatePostDto.content;
+        for (const key of Object.keys(updatePostDto)) {
+            post[key] = updatePostDto[key];
+        }
 
         return this.postRepository.save(post);
     }
