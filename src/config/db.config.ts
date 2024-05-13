@@ -1,5 +1,5 @@
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { PostModel } from "src/models/post.model";
+import { PostModel } from "src/posts/entities/post.entity";
 
 export const RootEntities = [PostModel];
 
