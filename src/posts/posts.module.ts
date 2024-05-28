@@ -6,6 +6,7 @@ import { PostModel } from "src/posts/entities/post.entity";
 
 @Module({
     imports: [TypeOrmModule.forFeature([PostModel])],
+    exports: [PostsService],
     controllers: [PostsController],
     providers: [PostsService],
 })
